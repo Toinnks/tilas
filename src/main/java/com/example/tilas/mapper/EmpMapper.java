@@ -30,4 +30,6 @@ public interface EmpMapper {
     使用新的分页的话只需要全部查询就好了
     */
     List<Emp> list(EmpQueryParam queryParam);
+
+    void save(Emp emp);
 }
