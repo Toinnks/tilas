@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -26,5 +27,26 @@ public class Emp {
     private String deptName; //部门名称
 
     private List<EmpExpr> exprList;
+
+    @Override
+    public String toString() {
+        return "Emp{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", gender=" + gender +
+                ", phone='" + phone + '\'' +
+                ", job=" + job +
+                ", salary=" + salary +
+                ", image='" + image + '\'' +
+                ", entryDate=" + entryDate +
+                ", deptId=" + deptId +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", deptName='" + deptName + '\'' +
+                ", exprList=" + exprList +
+                '}';
+    }
 }
 

@@ -8,4 +8,8 @@ import java.util.List;
 @Mapper
 public interface EmpExprMapper {
     void saveBatch(List<EmpExpr> exprList);
+
+    void deleteByIds(List<Integer> ids);
+
+    void update(List<EmpExpr> exprList);
 }

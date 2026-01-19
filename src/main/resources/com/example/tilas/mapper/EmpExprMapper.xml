@@ -9,6 +9,19 @@
         <foreach collection="exprList" item="expr" separator=",">
             (#{expr.empId}, #{expr.begin}, #{expr.end}, #{expr.company}, #{expr.job})
         </foreach>
-
     </insert>
+
+    <delete id="deleteByIds">
+        delete from emp_expr where emp_id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        <foreach collection="exprList" item="expr">
+            update emp_expr set company = #{company}, job = #{job}, begin = #{begin}, end = #{end}
+            where id=#{id}
+        </foreach>
+    </update>
 </mapper>
