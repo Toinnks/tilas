@@ -1,6 +1,7 @@
 package com.example.tilas.service;
 
 import com.example.tilas.pojo.Dept;
+import com.example.tilas.pojo.JobsAndDeptsReport;
 
 import java.util.List;
 

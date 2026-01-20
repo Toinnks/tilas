@@ -4,10 +4,9 @@ import com.example.tilas.mapper.EmpExprMapper;
 import com.example.tilas.pojo.*;
 import com.example.tilas.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;

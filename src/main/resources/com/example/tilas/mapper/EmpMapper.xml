@@ -4,6 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.tilas.mapper.EmpMapper">
 
+    <!-- 更新员工信息 -->
+    <update id="update">
+        UPDATE emp
+--             set更新语句自动生成set 字段，并且去掉最后一个多余的逗号
+        <set>
+            <if test="username != null">username=#{username},</if>
+            <if test="name != null">name=#{name},</if>
+            <if test="gender != null">gender=#{gender},</if>
+            <if test="phone != null">phone=#{phone},</if>
+            <if test="job != null">job=#{job},</if>
+            <if test="salary != null">salary=#{salary},</if>
+            <if test="image != null">image=#{image},</if>
+            <if test="entryDate != null">entry_date=#{entryDate},</if>
+            <if test="deptId != null">dept_id=#{deptId},</if>
+            update_time=#{updateTime}
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <!-- 查询员工列表，支持按姓名、性别、入职日期范围进行条件筛选 -->
     <select id="list" resultType="com.example.tilas.pojo.Emp">
         select e.*, d.name deptName from emp as e left join dept as d on e.dept_id = d.id
         <where>
@@ -19,21 +39,59 @@
         </where>
     </select>
 
+    <!-- 新增员工信息，使用自动生成主键 -->
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
-        insert into emp (username, name, gender, phone, job, salary, image, entry_date, dept_id, create_time,
+        insert into emp (username, name, password, gender, phone, job, salary, image, entry_date, dept_id, create_time,
                          update_time)
-        values (#{username}, #{name}, #{gender}, #{phone}, #{job}, #{salary}, #{image}, #{entryDate}, #{deptId},
+        values (#{username}, #{name}, #{password}, #{gender}, #{phone}, #{job}, #{salary}, #{image}, #{entryDate},
+                #{deptId},
                 #{createTime}, #{updateTime})
     </insert>
-    <!--批量删除员工信息-->
+
+    <!-- 批量删除员工信息 -->
     <delete id="deleteByIds">
         delete from emp where id in
         <foreach collection="ids" item="id" open="(" close=")" separator=",">
             #{id}
         </foreach>
     </delete>
+
+    <!-- 根据ID查询员工详情，包含员工的基本信息及其工作经历 -->
+    <select id="getById" resultMap="empResultMap">
+        select e.*, ee.id ee_id, ee.company ee_company, ee.job ee_job,ee.emp_id ee_empid,ee.begin ee_begin, ee.end ee_end
+        from emp e
+                 left outer join emp_expr ee on e.id = ee.emp_id
+        where e.id = #{id};
+    </select>
+
+
+    <select id="countEmpJobData" resultType="java.util.HashMap">
+        select
+            (case when job=1 then '班主任'
+                  when job=2 then '讲师'
+                  when job=3 then '学工主管'
+                  when job=4 then '教研主管'
+                  when job=5 then '咨询师'
+                  else '其他' end) pos,
+            count(*) num
+        from emp
+        group by job
+        order by num
+    </select>
+
+    <select id="countEmpGenderData" resultType="java.util.HashMap">
+        select
+            (case when gender=1 then '男'
+                  when gender=2 then '女'
+                  else '其他' end) gender,
+            count(*) num
+        from emp
+        group by gender
+    </select>
+
+    <!-- 定义员工结果映射，包含员工基本信息及工作经历集合 -->
     <resultMap id="empResultMap" type="com.example.tilas.pojo.Emp">
-        <id column="id" property="id" />
+        <result column="id" property="id" />
         <result column="username" property="username" />
         <result column="password" property="password" />
         <result column="name" property="name" />
@@ -47,7 +105,7 @@
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
 
-        <!--封装exprList-->
+        <!-- 封装员工工作经历列表 -->
         <collection property="exprList" ofType="com.example.tilas.pojo.EmpExpr">
             <id column="ee_id" property="id"/>
             <result column="ee_company" property="company"/>
@@ -57,10 +115,4 @@
             <result column="ee_empid" property="empId"/>
         </collection>
     </resultMap>
-    <select id="getById" resultMap="empResultMap">
-        select e.*, ee.id ee_id, ee.company ee_company, ee.job ee_job,ee.emp_id ee_empid,ee.begin ee_begin, ee.end ee_end
-        from emp e
-                 left outer join emp_expr ee on e.id = ee.emp_id
-        where e.id = #{id};
-    </select>
 </mapper>

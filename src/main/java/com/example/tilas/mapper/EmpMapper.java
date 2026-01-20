@@ -3,9 +3,9 @@ package com.example.tilas.mapper;
 import com.example.tilas.pojo.Emp;
 import com.example.tilas.pojo.EmpQueryParam;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Update;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -39,7 +39,10 @@ public interface EmpMapper {
     Emp getById(Integer id);
 
 
-    @Update("update emp set username=#{username},name=#{name}, gender=#{gender},phone=#{phone},job=#{job}"+
-    "salary=#{salary},image=#{image},entry_date=#{entryDate},dept_id=#{deptId},update_time=#{updateTie}")
     void update(Emp emp);
+
+    List<HashMap<String,Object>> countEmpJobData();
+
+    List<HashMap<String,Object>> countEmpGenderData();
+
 }
