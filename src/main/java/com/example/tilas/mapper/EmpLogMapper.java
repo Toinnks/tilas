@@ -8,4 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface EmpLogMapper {
     @Insert("insert into emp_log (operate_time, info) values (#{operateTime}, #{info})")
     public void add(EmpLog empLog);
+
 }

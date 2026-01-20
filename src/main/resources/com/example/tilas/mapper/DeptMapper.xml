@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.tilas.mapper.DeptMapper">
+
+
+
+    <select id="countDeptEmpData" resultType="java.util.HashMap">
+        SELECT
+            d.name AS dept_name,
+            COUNT(e.id) AS num
+        FROM
+            dept d
+                LEFT JOIN emp e ON d.id = e.dept_id
+        GROUP BY
+            d.id
+        ORDER BY
+            d.id;
+    </select>
+
+</mapper>

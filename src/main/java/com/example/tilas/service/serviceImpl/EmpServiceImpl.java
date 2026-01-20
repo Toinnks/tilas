@@ -13,10 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 @Slf4j
 @Service
@@ -99,14 +98,17 @@ public class EmpServiceImpl implements EmpService {
 
     @Override
     public void update(Emp emp) {
-        empMapper.update(emp);
         emp.setUpdateTime(LocalDateTime.now());
+        empMapper.update(emp);
+
         Integer empId = emp.getId();
         List<EmpExpr> exprList = emp.getExprList();
         if(!CollectionUtils.isEmpty(exprList)){
             exprList.forEach(empExpr -> empExpr.setEmpId(empId));
         }
-
-
+        //先删除旧数据
+        empExprMapper.deleteByIds(Arrays.asList(empId));
+        //插入新数据
+        empExprMapper.saveBatch(exprList);
     }
 }
