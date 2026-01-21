@@ -2,7 +2,9 @@ package com.example.tilas.mapper;
 
 import com.example.tilas.pojo.Emp;
 import com.example.tilas.pojo.EmpQueryParam;
+import com.example.tilas.pojo.LoginInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 
 import java.util.HashMap;
@@ -45,4 +47,6 @@ public interface EmpMapper {
 
     List<HashMap<String,Object>> countEmpGenderData();
 
+    @Select("select id,username,password from emp where username=#{username} and password = #{password}")
+    Emp selectByUsernameAndPassword(Emp emp);
 }

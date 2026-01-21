@@ -2,6 +2,7 @@ package com.example.tilas.service;
 
 import com.example.tilas.pojo.Emp;
 import com.example.tilas.pojo.EmpQueryParam;
+import com.example.tilas.pojo.LoginInfo;
 import com.example.tilas.pojo.PageResult;
 
 import java.time.LocalDate;
@@ -18,4 +19,6 @@ public interface EmpService {
     Emp getById(Integer id);
 
     void update(Emp emp);
+
+    LoginInfo login(Emp emp);
 }
