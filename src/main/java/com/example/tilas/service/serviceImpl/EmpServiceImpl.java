@@ -5,6 +5,7 @@ import com.example.tilas.mapper.EmpMapper;
 import com.example.tilas.pojo.*;
 import com.example.tilas.service.EmpLogService;
 import com.example.tilas.service.EmpService;
+import com.example.tilas.util.JWTUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,9 @@ import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -119,8 +122,12 @@ public class EmpServiceImpl implements EmpService {
         if(e == null){
             return null;
         }
-        LoginInfo loginInfo = new LoginInfo(e.getId(), e.getUsername(), e.getPassword(), "");
-        loginInfo.setToken("");
+
+        Map<String,Object> map =new HashMap<>();
+        map.put("id",e.getId());
+        map.put("username",e.getUsername());
+        String jwt = JWTUtil.genJwt(map);
+        LoginInfo loginInfo = new LoginInfo(e.getId(), e.getUsername(), e.getPassword(), jwt);
         return loginInfo;
     }
 }
